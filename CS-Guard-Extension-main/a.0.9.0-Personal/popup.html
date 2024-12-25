@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSGuard - Safe Browsing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            width: 420px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+        }
+
+        .popup-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        h3 {
+            color: #bb86fc;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .description {
+            color: #dcdcdc;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: #bb86fc;
+            color: #1a1a2e;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(187, 134, 252, 0.3);
+        }
+
+        #toggleButton {
+            background: #03dac6;
+        }
+
+        #toggleButton:hover {
+            box-shadow: 0 5px 15px rgba(3, 218, 198, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: #03dac6;
+        }
+
+        .status-text {
+            font-size: 0.8em;
+            color: #03dac6;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .theme-container {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .theme-label {
+            color: #dcdcdc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .theme-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* Light mode styles */
+        body.light-mode {
+            background: linear-gradient(135deg, #f6f7f9 0%, #e9ecef 100%);
+        }
+
+        body.light-mode .popup-container {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+        }
+
+        body.light-mode h3 {
+            color: #6200ea;
+        }
+
+        body.light-mode .description {
+            color: #333;
+        }
+
+        body.light-mode .theme-label {
+            color: #333;
+        }
+
+        .lists-container {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .list {
+            margin: 10px 0;
+        }
+
+        .list h4 {
+            color: #bb86fc;
+            margin-bottom: 5px;
+        }
+
+        .url-list {
+            max-height: 100px;
+            overflow-y: auto;
+            font-size: 12px;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .url-item {
+            padding: 2px 5px;
+            color: #dcdcdc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            border-bottom: 1px solid #333;
+        }
+
+        body.light-mode .url-item {
+            color: #333333;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .list h4 {
+            color: #6200ea;
+        }
+
+        body.light-mode .lists-container {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .input-container {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-container input {
+            width: 70%;
+            padding: 5px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        body.light-mode .input-container input {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #333333;
+        }
+
+        .input-container button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #03dac6;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #028a6c;
+        }
+
+        .popup-container {
+            width: 400px;
+            padding: 20px;
+            background-color: #121212;
+            color: #ffffff;
+            border-radius: 10px;
+        }
+
+        .remove-button {
+            background-color: #ff4757;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 2px 5px;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background-color: #e63946;
+        }
+
+        .api-key-container {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .api-input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        body.light-mode .api-input {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #333333;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .api-status {
+            font-size: 0.8em;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 15px;
+            padding: 0 5px;
+            height: 40px;
+        }
+
+        .left-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            min-width: 80px;
+        }
+
+        .center-section {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .right-controls {
+            margin-left: auto;
+        }
+
+        h3 {
+            margin: 0;
+            color: #bb86fc;
+            font-size: 1.5em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .toggle-extension {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            color: white;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .toggle-extension:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .toggle-extension.disabled {
+            background-color: #2f3542;
+        }
+
+        .help-button {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #bb86fc;
+            color: #1a1a2e;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .help-button:hover {
+            background: #9965f4;
+            transform: scale(1.1);
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: #bb86fc;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(187, 134, 252, 0.3);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .help-text {
+            display: none;
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 2px solid #bb86fc;
+            background: rgba(187, 134, 252, 0.1);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .help-text.show {
+            display: block;
+        }
+
+        .ip-info {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 2px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3px 6px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .url-item {
+            padding: 8px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .url-item > div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Status Indicator Text Styles */
+        .status-container {
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-text {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+        }
+
+        .status-text.enabled {
+            color: #03dac6; /* Teal color for enabled state */
+        }
+
+        .status-text.disabled {
+            color: #ff4757; /* Red color for disabled state */
+        }
+
+        /* Add light mode styles for IP info */
+        body.light-mode .ip-info {
+            color: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Find the .help-text style and update it to include light mode styles */
+        .help-text {
+            display: none;
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 2px solid #bb86fc;
+            background: rgba(187, 134, 252, 0.1);
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Add these new styles after the .help-text definition */
+        body.light-mode .help-text {
+            color: rgba(0, 0, 0, 0.8);  /* Darker text for light mode */
+            background: rgba(187, 134, 252, 0.05);
+        }
+
+        /* Add styles for the help links */
+        .help-link {
+            color: #bb86fc;  /* Purple color for dark mode */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .help-link:hover {
+            color: #9965f4;  /* Darker purple on hover */
+            text-decoration: underline;
+        }
+
+        /* Add light mode styles for links */
+        body.light-mode .help-link {
+            color: #6200ea;  /* Darker purple for light mode */
+        }
+
+        body.light-mode .help-link:hover {
+            color: #3700b3;  /* Even darker purple on hover in light mode */
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-container">
+        <div class="header-container">
+            <div class="left-controls">
+                <button id="helpButton" class="help-button" title="Show/Hide Help">?</button>
+                <label class="theme-switch" title="Toggle Dark/Light Mode">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="center-section">
+                <h3>CSGuard</h3>
+            </div>
+            <div class="right-controls">
+                <button id="toggleButton" class="toggle-extension">
+                    Enabled
+                </button>
+            </div>
+        </div>
+        
+        <p class="description">
+            Protecting your browsing experience by blocking malicious websites using VirusTotal's security database.
+        </p>
+
+        <div class="api-key-container">
+            <div class="help-text">
+                🔑 To get your API key: 
+                1. Visit <a href="https://www.virustotal.com/gui/join-us" target="_blank" class="help-link">VirusTotal</a> 
+                2. Visit <a href="https://www.abuseipdb.com/account/api" target="_blank" class="help-link">AbuseIPDB</a> 
+                3. Create a free account 
+                4. Go to your profile settings 
+                5. Copy your API key
+            </div>
+            <input type="text" id="apiKeyInput" placeholder="Enter VirusTotal API Key" class="api-input">
+            <button id="saveApiKey" class="btn btn-small">Save VirusTotal API Key</button>
+            <p id="apiStatus" class="api-status"></p>
+            
+            <input type="text" id="abuseIPDBKeyInput" placeholder="Enter AbuseIPDB API Key" class="api-input">
+            <button id="saveAbuseIPDBKey" class="btn btn-small">Save AbuseIPDB API Key</button>
+            <p id="abuseIPDBStatus" class="api-status"></p>
+        </div>
+        
+        <div class="input-container">
+            <div style="width: 100%;">
+                <div class="help-text">
+                    🚫 Blacklist: Add domains you want to block (e.g., "example.com")
+                </div>
+                <input type="text" id="blacklistInput" placeholder="Add to blacklist">
+            </div>
+            <button id="addBlacklistButton">Add</button>
+        </div>
+
+        <div class="input-container">
+            <div style="width: 100%;">
+                <div class="help-text">
+                    ✅ Whitelist: Add trusted domains to bypass security checks
+                </div>
+                <input type="text" id="whitelistInput" placeholder="Add to whitelist">
+            </div>
+            <button id="addWhitelistButton">Add</button>
+        </div>
+
+        <div class="lists-container">
+            <div class="help-text">
+                📋 Below are your custom blocked and trusted websites. Click 'Remove' to delete any entry.
+            </div>
+            <div class="list">
+                <h4>Blocked Websites</h4>
+                <div id="blockedList" class="url-list"></div>
+            </div>
+            <div class="list">
+                <h4>Whitelisted Websites</h4>
+                <div id="whiteList" class="url-list"></div>
+            </div>
+        </div>
+        
+        <button id="exportButton" class="btn">Export Database</button>
+        <button id="dashboardButton" class="btn" style="background-color: #9965f4;">Open Dashboard</button>
+
+        <div class="status-container">
+            <p id="statusText" class="status-text enabled">Protection is currently active</p>
+        </div>
+    </div>
+    <script src="databaseOperations.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Light Mode Styles */
+body.light {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+body.light .popup-container {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  font-size: 16px;
+}
+
+body.light .btn {
+  background-color: #6200ea;
+  color: white;
+  font-size: 16px;
+  padding: 14px;
+}
+
+body.light .btn:hover {
+  background-color: #3700b3;
+}
+
+body.light .theme-switch input:checked + .slider {
+  background-color: #6200ea;
+}
+
+/* Dark Mode Styles */
+body.dark {
+  background-color: #121212;
+  color: #f4f4f4;
+}
+
+body.dark .popup-container {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 250px;
+  font-size: 16px;
+}
+
+body.dark .btn {
+  background-color: #bb86fc;
+  color: black;
+}
+
+body.dark .btn:hover {
+  background-color: #3700b3;
+}
+
+body.dark .theme-switch input:checked + .slider {
+  background-color: #bb86fc;
+}
+
+/* Button Styles */
+.btn {
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.theme-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.theme-label {
+  color: inherit;
+  font-size: 16px;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.theme-toggle {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Updated Slider Styles */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Highlight the slider on hover */
+.slider:hover {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); /* Subtle glow effect */
+}
+
+/* Checked state for slider */
+.theme-toggle:checked + .slider {
+  background-color: #6200ea; /* Light Mode */
+}
+
+body.dark .theme-toggle:checked + .slider {
+  background-color: #bb86fc; /* Dark Mode */
+}
+
+.theme-toggle:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Description Styling */
+.description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Dark Mode */
+body.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Light Mode */
+body.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Slider and other custom styles remain as they are */

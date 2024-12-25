@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSGuard Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        h1 {
+            color: #bb86fc;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            color: #03dac6;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #dcdcdc;
+            font-size: 0.9em;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .recent-activity {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .activity-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .timestamp {
+            color: #bb86fc;
+            font-size: 0.8em;
+        }
+
+        /* Light mode styles */
+        body.light-mode {
+            background: linear-gradient(135deg, #f6f7f9 0%, #e9ecef 100%);
+            color: #333;
+        }
+
+        body.light-mode .dashboard-container {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.light-mode .stat-card,
+        body.light-mode .chart-container,
+        body.light-mode .recent-activity {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-mode .stat-label {
+            color: #666;
+        }
+
+        body.light-mode .activity-item {
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .detailed-stats {
+            margin-top: 30px;
+        }
+
+        .progress-bars {
+            padding: 20px;
+        }
+
+        .progress-item {
+            margin-bottom: 20px;
+        }
+
+        .progress-label {
+            margin-bottom: 8px;
+            color: #dcdcdc;
+        }
+
+        .progress-bar-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #03dac6;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+            width: 0%;
+        }
+
+        #maliciousSitesBar {
+            background: #ff4757;
+        }
+
+        .progress-value {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 0.8em;
+        }
+
+        body.light-mode .progress-label {
+            color: #333;
+        }
+
+        body.light-mode .progress-bar-container {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card {
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #bb86fc;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: rgba(187, 134, 252, 0.3);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .blocking-list {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .blocking-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: bold;
+            color: #bb86fc;
+        }
+
+        .blocking-items {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .blocking-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .blocking-item:last-child {
+            border-bottom: none;
+        }
+
+        .blocking-domain {
+            color: #ff4757;
+        }
+
+        .blocking-time {
+            color: #dcdcdc;
+        }
+
+        /* Light mode specific styles */
+        body.light-mode .blocking-list {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-mode .blocking-header {
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .blocking-item {
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .blocking-domain {
+            color: #d63031;
+        }
+
+        body.light-mode .blocking-time {
+            color: #2d3436;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <div class="header-controls">
+            <h1>CSGuard Security Dashboard</h1>
+            <label class="theme-switch" title="Toggle Dark/Light Mode">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalScanned">0</div>
+                <div class="stat-label">Total Sites Visited</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalBlocked">0</div>
+                <div class="stat-label">Total Sites Blocked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalWhitelisted">0</div>
+                <div class="stat-label">Whitelisted Sites</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="maliciousPercentage">0%</div>
+                <div class="stat-label">Malicious Sites Percentage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="todayBlocked">0</div>
+                <div class="stat-label">Blocked Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="lastScan">-</div>
+                <div class="stat-label">Last Scan</div>
+            </div>
+        </div>
+
+        <div class="detailed-stats">
+            <div class="chart-container">
+                <h2>Security Statistics</h2>
+                <div class="progress-bars">
+                    <div class="progress-item">
+                        <div class="progress-label">Safe Sites</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="safeSitesBar"></div>
+                            <span class="progress-value" id="safeSitesPercentage">0%</span>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">Malicious Sites</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="maliciousSitesBar"></div>
+                            <span class="progress-value" id="maliciousSitesPercentage">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Blocking Activity</h2>
+            <div class="blocking-list">
+                <div class="blocking-header">
+                    <span>Website</span>
+                    <span>Time Blocked</span>
+                </div>
+                <div id="blockingChart" class="blocking-items">
+                    <!-- Items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div id="activityList">
+                <!-- Activity items will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="databaseOperations.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

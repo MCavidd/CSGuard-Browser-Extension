@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Alert - Site Blocked</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .warning-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #ff4757;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+
+        h1 {
+            color: #ff4757;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .description {
+            color: #dcdcdc;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .site-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back {
+            background-color: #2f3542;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background-color: #3d4452;
+        }
+
+        .btn-allow {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        .btn-allow:hover {
+            background-color: #ff6b81;
+        }
+
+        .warning-text {
+            color: #ff6b81;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="warning-icon">⚠️</div>
+        <h1>Security Alert</h1>
+        <p class="description">
+            This website has been blocked by VirusTotal Website Blocker due to potential security risks. 
+            Our security scan has detected suspicious activity or malicious content on this domain.
+        </p>
+        <div class="site-info">
+            <p>Reason: Flagged by VirusTotal security scan</p>
+        </div>
+        <div class="button-container">
+            <button class="btn btn-back" id="backButton">Go Back</button>
+            <button class="btn btn-allow" id="allowButton">Allow Access</button>
+        </div>
+        <p class="warning-text">
+            ⚠️ Proceeding to this site may put your device and data at risk
+        </p>
+    </div>
+
+    <script src="databaseOperations.js"></script>
+    <script src="blocked.js"></script>
+</body>
+</html>
+
+

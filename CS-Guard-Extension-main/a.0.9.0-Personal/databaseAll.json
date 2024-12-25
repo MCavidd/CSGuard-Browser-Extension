@@ -1,0 +1,13 @@
+{
+    "blockedUrls": [],
+    "whitelistedUrls": [],
+    "ipDatabase": {
+        "blockedIps": {},
+        "whitelistedIps": {}
+    },
+    "timestamps": {
+        "blocked": {},
+        "whitelisted": {},
+        "checked": {}
+    }
+} 
